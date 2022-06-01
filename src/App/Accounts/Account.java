@@ -4,7 +4,7 @@ import App.Exceptions.IDChangeNotValidException;
 
 import java.util.UUID;
 
-public abstract class Account
+public abstract class Account implements Comparable
 {
     private final UUID uuid;
     private String mail;
@@ -38,5 +38,11 @@ public abstract class Account
         return  "uuid=" + uuid +
                 ", mail='" + mail + '\'' +
                 ", password='" + password + '\'';
+    }
+    
+    @Override
+    public int compareTo(Object o)
+    {
+        return this.getUuid().compareTo(((Account)o).getUuid());
     }
 }

@@ -3,6 +3,7 @@ import App.Accounts.Administrator;
 import App.Accounts.Adress;
 import App.Accounts.User;
 
+import java.util.TreeSet;
 import java.util.UUID;
 
 public class index
@@ -21,6 +22,23 @@ public class index
                 new AppDate(27, 1, 2003)
         );
 
-        System.out.println(user);
+        User user2 = new User(
+                "b",
+                "321",
+                "Jorge",
+                "Alvarez",
+                "654",
+                "555",
+                new Adress("EEUU", "Florida", "Miami", "Ocean View"),
+                UUID.randomUUID(),
+                new AppDate(15, 9, 2002)
+        );
+
+        TreeSet<User> users = new TreeSet<>();
+
+        users.add(user);
+        users.add(user2);
+
+        System.out.println(users);
     }
 }
