@@ -6,5 +6,5 @@ public enum ESRBClassification
     E10,
     T,
     M,
-    A
+    A,
 }

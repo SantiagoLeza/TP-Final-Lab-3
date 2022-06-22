@@ -4,9 +4,7 @@ import java.util.UUID;
 
 public class Administrator extends Account{
 
-    
-
-    public Administrator(String mail, String password, String name, String surname, String ID, String phone, Adress adress, UUID uuid)
+    public Administrator(String mail, String password, UUID uuid)
     {
         super(mail, password, uuid);
     }

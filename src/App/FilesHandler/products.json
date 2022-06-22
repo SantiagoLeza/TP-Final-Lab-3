@@ -1,0 +1,36 @@
+[
+  {
+	"editor": "editor1" ,
+	"languages": [ ] ,
+	"sells": 0 ,
+	"rating": 0 ,
+	"genders": [ ] ,
+	"labels": [ ] ,
+	"platafomrs": [ ] ,
+	"reviews": [ ] ,
+	"size": 10 ,
+	"price": 10 ,
+	"name": "g1" ,
+	"developer": "dev1" ,
+	"id": 0 ,
+	"ESRB": "E" ,
+	"multiplayer": true
+  } ,
+  {
+	"editor": "editor2" ,
+	"languages": [ ] ,
+	"sells": 0 ,
+	"rating": 0 ,
+	"genders": [ ] ,
+	"labels": [ ] ,
+	"platafomrs": [ ] ,
+	"reviews": [ ] ,
+	"size": 10 ,
+	"price": 10 ,
+	"name": "g2" ,
+	"developer": "dev2" ,
+	"id": 1 ,
+	"ESRB": "E" ,
+	"multiplayer": true
+  }
+]

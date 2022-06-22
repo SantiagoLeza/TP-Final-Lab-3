@@ -1,44 +1,57 @@
-import App.*;
-import App.Accounts.Administrator;
-import App.Accounts.Adress;
 import App.Accounts.User;
+import App.AppDate;
+import App.Exceptions.BadInputException;
+import App.Exceptions.NewUserException;
+import App.FilesHandler.UserGamesFile;
+import App.FilesHandler.UsersFile;
+import App.Frames.UserMainFrame;
+import App.Products.ESRBClassification;
+import App.Products.Game;
+import App.Steam;
 
-import java.util.TreeSet;
-import java.util.UUID;
+import java.io.IOException;
 
 public class index
 {
     public static void main(String[] args)
     {
-        User user = new User(
-                "a@gmail.com",
-                "123",
-                "Juan",
-                "Perez",
-                "123456789",
-                "123456789",
-                new Adress("Argentina", "Buenos Aires", "Ciudad Autonoma de Buenos Aires", "Av. Siempre Viva 123"),
-                UUID.randomUUID(),
-                new AppDate(27, 1, 2003)
+        UsersFile usersFile = new UsersFile();
+
+        Steam steam = new Steam();
+
+        Game g1 = new Game(
+                "God of War",
+                4500,
+                ESRBClassification.T,
+                new AppDate(2,2,2018),
+                false,
+                "Santa Monica",
+                "PlayStation",
+                70
         );
 
-        User user2 = new User(
-                "b",
-                "321",
-                "Jorge",
-                "Alvarez",
-                "654",
-                "555",
-                new Adress("EEUU", "Florida", "Miami", "Ocean View"),
-                UUID.randomUUID(),
-                new AppDate(15, 9, 2002)
-        );
+//        try {
+//            steam.createUser("@.com", "123", "Jorge", "Lopez", "456654", "5555555", "USA", "Florida", "Miami", "Ocean View Av.", 2000, 2, 2);
+//        } catch (NewUserException | BadInputException e) {
+//            e.printStackTrace();
+//        }
 
-        TreeSet<User> users = new TreeSet<>();
-
-        users.add(user);
-        users.add(user2);
-
-        System.out.println(users);
+        try
+        {
+            User user = usersFile.userFindMail("@.com");
+            //UserGamesFile.addProductLibrary(user.getUuid(), g1);
+            if(user != null)
+            {
+                UserMainFrame mainFrame = new UserMainFrame(user);
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        
     }
 }
+
+//steam.createUser("@.com", "123", "Jorge", "Lopez", "456654", "555-5555",
+//                   "USA", "Florida", "Miami", "Ocean View Av.", 2000, 2, 2);

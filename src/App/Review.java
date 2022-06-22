@@ -1,5 +1,8 @@
 package App;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Review
 {
     private String user;
@@ -41,5 +44,21 @@ public class Review
     public void setRating(int rating)
     {
         this.rating = rating;
+    }
+    
+    public JSONObject toJSON()
+    {
+        JSONObject json = new JSONObject();
+        try
+        {
+            json.put("user", user);
+            json.put("text", text);
+            json.put("rating", rating);
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        return json;
     }
 }
