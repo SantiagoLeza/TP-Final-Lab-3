@@ -45,7 +45,15 @@ public class Review
     {
         this.rating = rating;
     }
-    
+
+    @Override
+    public String toString()
+    {
+        return "user='" + user + '\'' +
+                ", text='" + text + '\'' +
+                ", rating=" + rating;
+    }
+
     public JSONObject toJSON()
     {
         JSONObject json = new JSONObject();

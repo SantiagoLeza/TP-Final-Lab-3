@@ -3,18 +3,55 @@
 	"game": {
 	  "income": 0,
 	  "editor": "PlayStation",
-	  "languages": [],
+	  "languages": [
+		"English",
+		"Japanese",
+		"French",
+		"German",
+		"Spanish"
+	  ],
 	  "sells": 0,
 	  "releaseDate": {
 		"month": 2,
-		"year": 2,
-		"day": 2018
+		"year": 2018,
+		"day": 2
 	  },
 	  "rating": 0,
-	  "genders": [],
-	  "labels": [],
-	  "platafomrs": [],
-	  "reviews": [],
+	  "genders": [
+		"Adventure",
+		"Action"
+	  ],
+	  "labels": [
+		"Nordic",
+		"God",
+		"Fight"
+	  ],
+	  "platafomrs": [
+		"Windows",
+		"Steam Deck"
+	  ],
+	  "reviews": [
+		{
+		  "rating": 3,
+		  "text": "Espectacular",
+		  "user": "asd"
+		},
+		{
+		  "rating": 1,
+		  "text": "tas tiste",
+		  "user": "dsa"
+		},
+		{
+		  "rating": 5,
+		  "text": "anachei",
+		  "user": "dsa"
+		},
+		{
+		  "rating": 4,
+		  "text": "buenardo",
+		  "user": "dsa"
+		}
+	  ],
 	  "size": 70,
 	  "price": 4500,
 	  "name": "God of War",
@@ -28,12 +65,14 @@
 	"game": {
 	  "income": 0,
 	  "editor": "PlayStation",
-	  "languages": [],
+	  "languages": [
+		"English"
+	  ],
 	  "sells": 0,
 	  "releaseDate": {
 		"month": 2,
-		"year": 2,
-		"day": 2019
+		"year": 2019,
+		"day": 2
 	  },
 	  "rating": 0,
 	  "genders": [],

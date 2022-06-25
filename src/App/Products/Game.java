@@ -83,7 +83,7 @@ public class Game extends Product
 
         JSONArray lenguagesArray = (JSONArray) obJSOn.get("languages");
         ArrayList<String> arrayListLenguages = new ArrayList<>();
-        for (int i = 0; i < labelsArray.length(); i++)
+        for (int i = 0; i < lenguagesArray.length(); i++)
         {
             arrayListLenguages.add(lenguagesArray.get(i).toString());
         }

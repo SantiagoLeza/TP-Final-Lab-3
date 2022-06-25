@@ -3,6 +3,7 @@ package App.Frames;
 import App.Accounts.User;
 import App.Exceptions.FileErrorException;
 import App.FilesHandler.GamesFile;
+import App.Frames.Panels.StarsPanel;
 import App.Products.Product;
 import org.json.JSONException;
 
@@ -11,11 +12,12 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
 import java.util.Map;
 
 public class UserMainFrame extends JFrame
 {
+    private boolean close = true;
+
     public UserMainFrame(User user)
     {
         super("Steam");
@@ -133,6 +135,15 @@ public class UserMainFrame extends JFrame
         userLogOut.setIcon(logOutIcon);
         userLogOut.setHorizontalAlignment(SwingConstants.CENTER);
         userLogOut.setVerticalAlignment(SwingConstants.CENTER);
+        userLogOut.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                close = false;
+                dispose();
+            }
+        });
 
         topBarRight.add(userBalance);
         topBarRight.add(userName);
@@ -153,19 +164,23 @@ public class UserMainFrame extends JFrame
         centerPanel.setBounds(0, 75, this.getWidth(), this.getHeight() - 75);
 
         JPanel gamesPanel = new JPanel();
-        gamesPanel.setLayout(new GridLayout(0, 1));
+        gamesPanel.setLayout(null);
         gamesPanel.setBackground(new Color(36, 44, 68));
         gamesPanel.setBounds((centerPanel.getWidth() - ( (int) (centerPanel.getWidth() / 1.5f) )) / 2, 0, (int) (centerPanel.getWidth() / 1.5f), centerPanel.getHeight());
 
         try {
+            int i = 0;
             for (Map.Entry<Integer, Product> entry : GamesFile.fileToTree2("./src/App/FilesHandler/products.json").getTreemap().entrySet())
             {
+                i++;
+
                 Product product = entry.getValue();
 
                 JPanel productPanel = new JPanel();
-                productPanel.setLayout(new GridLayout(1, 2));
+                productPanel.setLayout(new GridLayout(1, 0));
                 productPanel.setBackground(new Color(36, 44, 68));
-                productPanel.setPreferredSize(new Dimension((int) (gamesPanel.getWidth() * 0.9f), 50));
+                productPanel.setBounds((int) (gamesPanel.getWidth() * 0.05f), (100 + 5) * i, (int) (gamesPanel.getWidth() * 0.9f), 100);
+                productPanel.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
 
                 JLabel productName = new JLabel(product.getName());
                 productName.setForeground(Color.WHITE);
@@ -180,7 +195,22 @@ public class UserMainFrame extends JFrame
                 productPrice.setVerticalAlignment(SwingConstants.CENTER);
 
                 productPanel.add(productName);
+                productPanel.add(new JLabel(""));
+                productPanel.add(new StarsPanel(product.getRating()));
+                productPanel.add(new JLabel(""));
                 productPanel.add(productPrice);
+
+                productPanel.addMouseListener(new MouseAdapter()
+                {
+                    @Override
+                    public void mouseClicked(MouseEvent e)
+                    {
+                        if (e.getButton() == MouseEvent.BUTTON1)
+                        {
+                            ProductFrame productFrame = new ProductFrame(user, product);
+                        }
+                    }
+                });
 
                 gamesPanel.add(productPanel);
             }
@@ -199,5 +229,10 @@ public class UserMainFrame extends JFrame
         add(mainPanel);
 
         setVisible(true);
+    }
+
+    public boolean isClose()
+    {
+        return close;
     }
 }

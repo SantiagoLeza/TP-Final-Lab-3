@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import App.ColeccionGenerica;
+import App.Review;
 
 
 import java.util.TreeMap;
@@ -106,4 +107,55 @@ public class GamesFile
         }
         return false;
     }
+
+    public static void addReview(int id, Review review )
+    {
+
+        try{
+            JSONFiles jf = new JSONFiles("./src/App/FilesHandler/products.json");
+            JSONArray ja = jf.readJSON();
+
+            JSONObject productJSON;
+
+            for (int i = 0; i < ja.length(); i++)
+            {
+                productJSON = (JSONObject) ja.get(i);
+
+                if(productJSON.get("game") != null)
+                {
+                    JSONObject game = productJSON.getJSONObject("game");
+                    if ( id  == Integer.parseInt(game.get("id").toString()))
+                    {
+                        JSONArray jArray = game.getJSONArray("reviews");
+                        jArray.put(review.toJSON());
+                        game.put("reviews", jArray);
+                        jf.writeJSON(ja);
+                    }
+                }
+                else if(productJSON.get("app") != null)
+                {
+                    JSONObject app = productJSON.getJSONObject("app");
+                    if (id == Integer.parseInt(app.get("id").toString()))
+                    {
+                        JSONArray jArray = app.getJSONArray("reviews");
+                        jArray.put(review.toJSON());
+                        app.put("reviews", jArray);
+                        jf.writeJSON(ja);
+                    }
+                }
+            }
+
+        } catch (ClassCastException e)
+        {
+            e.printStackTrace();
+
+        }
+         catch (FileErrorException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

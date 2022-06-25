@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.UUID;
 
@@ -173,6 +174,26 @@ public class Steam
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<User> showAllUsers ()
+    {
+        try {
+            return usersFile.readBinary(usersFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public User showUserthroughMail (String mail)
+    {
+        try {
+            return usersFile.userFindMail(mail);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

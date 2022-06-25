@@ -86,6 +86,11 @@ public class Product {
         }
     }
 
+    public void addReview(Review review)
+    {
+        reviews.add(review);
+    }
+
     public static int getLastID()
     {
         return lastID;
@@ -94,6 +99,11 @@ public class Product {
     public int getId()
     {
         return id;
+    }
+
+    public ArrayList<Review> getReviews()
+    {
+        return reviews;
     }
 
     public String getName()
@@ -106,9 +116,28 @@ public class Product {
         return price;
     }
 
+    public float getRating()
+    {
+        float f = 0;
+
+        for (Review r : reviews)
+        {
+            f += r.getRating();
+        }
+
+        if(f == 0) return 0;
+
+        return f / reviews.size();
+    }
+
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public ESRBClassification getESRB()
+    {
+        return ESRB;
     }
 
     public void setPrice(float price)

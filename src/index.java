@@ -1,10 +1,13 @@
 import App.Accounts.Account;
 import App.Accounts.Administrator;
 import App.Accounts.User;
+import App.FilesHandler.GamesFile;
+import App.FilesHandler.UserGamesFile;
 import App.FilesHandler.UsersFile;
 import App.Frames.AdminMainFrame;
 import App.Frames.LogInFrame;
 import App.Frames.UserMainFrame;
+import App.Review;
 import App.Steam;
 
 import java.io.IOException;
@@ -15,28 +18,49 @@ public class index
     {
         Steam steam = new Steam();
 
-        LogInFrame logInFrame = new LogInFrame();
-
-        while(logInFrame.isVisible())
+        boolean close = false;
+        while (!close)
         {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+            LogInFrame logInFrame = new LogInFrame();
 
-        Account user = logInFrame.getUser();
-
-        if(user != null)
-        {
-            if(user instanceof User)
+            while(logInFrame.isVisible())
             {
-                UserMainFrame userMainFrame = new UserMainFrame((User) user);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {
+                    
+                }
             }
-            else
+
+            Account user = logInFrame.getUser();
+
+            if(user != null)
             {
-                AdminMainFrame adminMainFrame = new AdminMainFrame((Administrator) user);
+                if(user instanceof User)
+                {
+                    UserMainFrame userMainFrame = new UserMainFrame((User) user);
+                    while(userMainFrame.isVisible())
+                    {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    close = userMainFrame.isClose();
+                }
+                else
+                {
+                    AdminMainFrame adminMainFrame = new AdminMainFrame((Administrator) user);
+                    while(adminMainFrame.isVisible())
+                    {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         }
 

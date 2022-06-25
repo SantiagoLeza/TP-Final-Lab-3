@@ -1,5 +1,6 @@
 package App.Accounts;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Administrator extends Account{
@@ -8,4 +9,5 @@ public class Administrator extends Account{
     {
         super(mail, password, uuid);
     }
+
 }

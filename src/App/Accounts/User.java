@@ -177,18 +177,18 @@ public class User extends Account
     }
 
     public boolean searchLibrary ( Integer num )
+    {
+
+        for ( int i = 0; i < library.size(); i++ )
         {
-
-            for ( int i = 0; i < library.size(); i++ )
+            if ( library.get(i) == num)
             {
-                if ( library.get(i) == num)
-                {
-                    return true;
-                }
+                return true;
             }
-
-            return false;
         }
+
+        return false;
+    }
 
     public void removeLibrary ( Integer num )
     {
