@@ -1,12 +1,10 @@
+import App.Accounts.Account;
+import App.Accounts.Administrator;
 import App.Accounts.User;
-import App.AppDate;
-import App.Exceptions.BadInputException;
-import App.Exceptions.NewUserException;
-import App.FilesHandler.UserGamesFile;
 import App.FilesHandler.UsersFile;
+import App.Frames.AdminMainFrame;
+import App.Frames.LogInFrame;
 import App.Frames.UserMainFrame;
-import App.Products.ESRBClassification;
-import App.Products.Game;
 import App.Steam;
 
 import java.io.IOException;
@@ -15,43 +13,32 @@ public class index
 {
     public static void main(String[] args)
     {
-        UsersFile usersFile = new UsersFile();
-
         Steam steam = new Steam();
 
-        Game g1 = new Game(
-                "God of War",
-                4500,
-                ESRBClassification.T,
-                new AppDate(2,2,2018),
-                false,
-                "Santa Monica",
-                "PlayStation",
-                70
-        );
+        LogInFrame logInFrame = new LogInFrame();
 
-//        try {
-//            steam.createUser("@.com", "123", "Jorge", "Lopez", "456654", "5555555", "USA", "Florida", "Miami", "Ocean View Av.", 2000, 2, 2);
-//        } catch (NewUserException | BadInputException e) {
-//            e.printStackTrace();
-//        }
-
-        try
+        while(logInFrame.isVisible())
         {
-            User user = usersFile.userFindMail("@.com");
-            //UserGamesFile.addProductLibrary(user.getUuid(), g1);
-            if(user != null)
-            {
-                UserMainFrame mainFrame = new UserMainFrame(user);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        catch (IOException e)
+
+        Account user = logInFrame.getUser();
+
+        if(user != null)
         {
-            e.printStackTrace();
+            if(user instanceof User)
+            {
+                UserMainFrame userMainFrame = new UserMainFrame((User) user);
+            }
+            else
+            {
+                AdminMainFrame adminMainFrame = new AdminMainFrame((Administrator) user);
+            }
         }
-        
+
     }
 }
-
-//steam.createUser("@.com", "123", "Jorge", "Lopez", "456654", "555-5555",
-//                   "USA", "Florida", "Miami", "Ocean View Av.", 2000, 2, 2);

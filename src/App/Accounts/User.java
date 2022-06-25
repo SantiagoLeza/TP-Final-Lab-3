@@ -3,13 +3,15 @@ package App.Accounts;
 import App.AppDate;
 import App.Exceptions.FileErrorException;
 import App.FilesHandler.UserGamesFile;
+import App.Products.Product;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-public class User extends Account {
+public class User extends Account
+{
 
     private AppDate birthDate;
     private AccountInfo accountInfo;
@@ -31,18 +33,16 @@ public class User extends Account {
 
 
     public User(String mail, String password, String name, String surname, String ID, String phone, Adress adress, UUID uuid, AppDate birthDate,
-                float wallet, ArrayList<Integer> whish, ArrayList<Integer> cart, ArrayList<Integer> library )
-        {
-            super(mail, password, uuid);
-            this.accountInfo = new AccountInfo(name, surname, ID, phone, adress);
-            this.birthDate = birthDate;
-            this.wishList = whish;
-            this.cart = cart;
-            this.library = library;
-            this.wallet = wallet;
-        }
-
-
+                float wallet, ArrayList<Integer> whish, ArrayList<Integer> cart, ArrayList<Integer> library)
+    {
+        super(mail, password, uuid);
+        this.accountInfo = new AccountInfo(name, surname, ID, phone, adress);
+        this.birthDate = birthDate;
+        this.wishList = whish;
+        this.cart = cart;
+        this.library = library;
+        this.wallet = wallet;
+    }
 
     public String getName()
     {
@@ -104,27 +104,139 @@ public class User extends Account {
         this.wallet = wallet;
     }
 
-    public void addFounds (float newFounds )
+    public void addFounds(float newFounds)
     {
         this.wallet += newFounds;
     }
 
-    public void addWhisList ( Integer num )
+    //wishlist
+
+    public void addWhishList(Integer num)
     {
-       this.wishList.add(num);
+        if (!searchWhishList(num))
+        {
+            this.wishList.add(num);
+        }
     }
-    
-    public void addCart ( Integer num ) 
+
+    public boolean searchWhishList(Integer num)
     {
-        this.cart.add(num);
+            for (int i = 0; i < wishList.size(); i++)
+            {
+                if (wishList.get(i) == num) {
+                    return true;
+                }
+            }
+
+        return false;
     }
-    
+
+    public void removeWishList ( Integer num )
+    {
+        this.wishList.remove(num);
+    }
+
+    // Cart
+
+    public void addCart ( Integer num )
+    {
+        if (!searchCart(num))
+        {
+            this.cart.add(num);
+        }
+    }
+
+    public boolean searchCart ( Integer num )
+        {
+
+            for ( int i = 0; i< cart.size(); i++ )
+            {
+                if ( cart.get(i) == num)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+    public void removeCart ( Integer num )
+    {
+        this.cart.remove(num);
+    }
+
+    // library
+
     public void addLibrary ( Integer num )
     {
-        this.library.add(num);
+        if (!searchLibrary(num))
+        {
+            this.library.add(num);
+        }
     }
-    
-   
+
+    public boolean searchLibrary ( Integer num )
+        {
+
+            for ( int i = 0; i < library.size(); i++ )
+            {
+                if ( library.get(i) == num)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+    public void removeLibrary ( Integer num )
+    {
+        this.library.remove(num);
+    }
+
+    //Autoriza la compra
+    public boolean canBuy ( Product product )
+    {
+        boolean result = false;
+
+        if ( product != null && product.getPrice() <= wallet )
+        {
+            result = true;
+        }
+
+        return result;
+    }
+
+     //Finaliza la compra
+        public boolean finalizePurchase ( Product product)
+        {
+
+            boolean result = false;
+
+            if ( canBuy(product) )
+            {
+                if (searchCart(product.getId()))
+                {
+                    removeCart(product.getId());
+                }
+                if (searchWhishList(product.getId()))
+                {
+                    removeWishList(product.getId());
+                }
+
+                addLibrary(product.getId());
+
+                wallet -= product.getPrice();
+
+                result = true;
+            }
+
+            return result;
+        }
+
+
+
 
     @Override
     public String toString()
@@ -133,7 +245,7 @@ public class User extends Account {
                 ", birthDate=" + birthDate +
                 ", " + accountInfo;
     }
-    
+
 }
 
 

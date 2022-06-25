@@ -1,12 +1,12 @@
 package App.FilesHandler;
 
 import App.Accounts.Administrator;
-import App.Accounts.Adress;
 import App.Accounts.User;
-import App.AppDate;
 import App.Exceptions.MissMatchClassException;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -30,6 +30,16 @@ public class AdminFile implements BinaryFiles
         catch (ClassCastException e)
         {
             throw new MissMatchClassException("Not an Administrator object");
+        }
+    }
+
+    @Override
+    public void deleteBinary(String fileName) throws IOException
+    {
+        if (Files.exists(Path.of(fileName)))
+        {
+            Files.delete(Path.of(fileName));
+            Files.createFile(Path.of(fileName));
         }
     }
 
@@ -72,7 +82,7 @@ public class AdminFile implements BinaryFiles
 
     public Administrator userFindMail(String mail) throws IOException
     {
-        FileInputStream fis = new FileInputStream("./src/App/FilesHandler/users.bin");
+        FileInputStream fis = new FileInputStream("./src/App/FilesHandler/admin.bin");
         DataInputStream dis = new DataInputStream(fis);
 
         try {
@@ -104,5 +114,60 @@ public class AdminFile implements BinaryFiles
 
         return null;
     }
+
+    public void adminUpdate ( Administrator admin ) throws IOException
+        {
+            ArrayList<Administrator> admins = readBinary("./src/App/FilesHandler/admin.bin");
+
+            FileInputStream fis = new FileInputStream("./src/App/FilesHandler/admin.bin");
+            DataInputStream dis = new DataInputStream(fis);
+
+            try
+            {
+                UUID uuid = null;
+                boolean flag = false;
+
+                while (true) {
+                    if (flag) break;
+                    uuid = UUID.fromString(dis.readUTF());
+                    dis.readUTF();
+                    dis.readUTF();
+
+
+                    if (uuid.toString().equals(admin.getUuid().toString()))
+                    {
+                        flag = true;
+                        for (Administrator a : admins)
+                        {
+                            if (a.getUuid().toString().equals(admin.getUuid().toString()))
+                            {
+                                admins.remove(a);
+                                admins.add(admin);
+                                break;
+                            }
+                        }
+
+                        dis.close();
+                        deleteBinary("./src/App/FilesHandler/admin.bin");
+
+                        for (Administrator u : admins) {
+                            writeBinary("./src/App/FilesHandler/admin.bin", u);
+                        }
+                    }
+                }
+            }
+            catch (EOFException e)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+            } finally {
+                dis.close();
+            }
+
+
+        }
 
  }

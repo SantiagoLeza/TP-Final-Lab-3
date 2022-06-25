@@ -59,12 +59,12 @@ public class Game extends Product
     {
         super(
 
-                (JSONObject) obJSOn.get("id"),
-                (JSONObject) obJSOn.get("name"),
-                (JSONObject) obJSOn.get("price"),
+                new JSONObject("{" + "id:" + obJSOn.get("id").toString() + "}"),
+                new JSONObject("{" + "name:" + obJSOn.get("name").toString() + "}"),
+                new JSONObject("{" + "price:" + obJSOn.get("price").toString() + "}"),
                 (JSONArray) obJSOn.get("reviews"),
-                (JSONObject) obJSOn.get("ESRB"),
-                (JSONObject) obJSOn.get("income")
+                new JSONObject("{" + "ESRB:" + obJSOn.get("ESRB").toString() + "}"),
+                new JSONObject("{" + "income:" + obJSOn.get("income").toString() + "}")
         );
 
         JSONArray gendresArray = (JSONArray) obJSOn.get("genders");
@@ -81,7 +81,7 @@ public class Game extends Product
             arrayListLabels.add(labelsArray.get(i).toString());
         }
 
-        JSONArray lenguagesArray = (JSONArray) obJSOn.get("language");
+        JSONArray lenguagesArray = (JSONArray) obJSOn.get("languages");
         ArrayList<String> arrayListLenguages = new ArrayList<>();
         for (int i = 0; i < labelsArray.length(); i++)
         {
@@ -107,7 +107,7 @@ public class Game extends Product
         this.multiplayer = Boolean.parseBoolean(obJSOn.get("multiplayer").toString());
         this.developer = obJSOn.get("developer").toString();
         this.editor = obJSOn.get("editor").toString();
-        this.sizeGB = Float.parseFloat(obJSOn.get("sizeGB").toString());
+        this.sizeGB = Float.parseFloat(obJSOn.get("size").toString());
     }
 
 

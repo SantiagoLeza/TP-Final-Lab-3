@@ -71,12 +71,14 @@ public class Product {
                 reviewCollection.add(new Review(reviewObject.get("user").toString(), reviewObject.get("text").toString(), Integer.parseInt(reviewObject.get("rating").toString())));
             }
 
-            this.id = Integer.parseInt(id.toString());
-            this.name = name.toString();
-            this.price = Float.parseFloat(price.toString());
+            this.id = Integer.parseInt(id.get("id").toString());
+            this.name = name.get("name").toString();
+            this.price = Float.parseFloat(price.get("price").toString());
             this.reviews = reviewCollection;
-            this.ESRB = ESRBClassification.valueOf(esrb.toString());
-            this.income= Float.parseFloat(income.toString());
+            this.ESRB = ESRBClassification.valueOf(esrb.get("ESRB").toString());
+            this.income= Float.parseFloat(income.get("income").toString());
+
+            lastID = Math.max(lastID, Integer.parseInt(id.get("id").toString()));
         }
         catch (JSONException e)
         {
@@ -171,6 +173,7 @@ public class Product {
             json.put("rating", rating);
             json.put("sells", sells);
             json.put("ESRB", ESRB);
+            json.put("income", income);
             return json;
         }
         catch (JSONException e)

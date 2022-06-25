@@ -1,36 +1,52 @@
 [
   {
-	"editor": "editor1" ,
-	"languages": [ ] ,
-	"sells": 0 ,
-	"rating": 0 ,
-	"genders": [ ] ,
-	"labels": [ ] ,
-	"platafomrs": [ ] ,
-	"reviews": [ ] ,
-	"size": 10 ,
-	"price": 10 ,
-	"name": "g1" ,
-	"developer": "dev1" ,
-	"id": 0 ,
-	"ESRB": "E" ,
-	"multiplayer": true
-  } ,
+	"game": {
+	  "income": 0,
+	  "editor": "PlayStation",
+	  "languages": [],
+	  "sells": 0,
+	  "releaseDate": {
+		"month": 2,
+		"year": 2,
+		"day": 2018
+	  },
+	  "rating": 0,
+	  "genders": [],
+	  "labels": [],
+	  "platafomrs": [],
+	  "reviews": [],
+	  "size": 70,
+	  "price": 4500,
+	  "name": "God of War",
+	  "developer": "Santa Monica",
+	  "id": 0,
+	  "ESRB": "T",
+	  "multiplayer": false
+	}
+  },
   {
-	"editor": "editor2" ,
-	"languages": [ ] ,
-	"sells": 0 ,
-	"rating": 0 ,
-	"genders": [ ] ,
-	"labels": [ ] ,
-	"platafomrs": [ ] ,
-	"reviews": [ ] ,
-	"size": 10 ,
-	"price": 10 ,
-	"name": "g2" ,
-	"developer": "dev2" ,
-	"id": 1 ,
-	"ESRB": "E" ,
-	"multiplayer": true
+	"game": {
+	  "income": 0,
+	  "editor": "PlayStation",
+	  "languages": [],
+	  "sells": 0,
+	  "releaseDate": {
+		"month": 2,
+		"year": 2,
+		"day": 2019
+	  },
+	  "rating": 0,
+	  "genders": [],
+	  "labels": [],
+	  "platafomrs": [],
+	  "reviews": [],
+	  "size": 120,
+	  "price": 3000,
+	  "name": "The Last of Us Part II",
+	  "developer": "Santa Monica",
+	  "id": 1,
+	  "ESRB": "A",
+	  "multiplayer": false
+	}
   }
 ]

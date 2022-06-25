@@ -1,5 +1,6 @@
 package App.FilesHandler;
 
+import App.Exceptions.AlreadyInListException;
 import App.Exceptions.FileErrorException;
 import App.Products.Product;
 import org.json.JSONArray;
@@ -29,13 +30,70 @@ public class UserGamesFile
 
         jf.writeJSON(ja);
     }
+    
+    public static boolean searchInWishList(UUID id, Product product) throws FileErrorException, JSONException
+    {
+        ArrayList<Integer> wishList = getWishList(id);
 
-    public static void addProductWishList(UUID id, Product product)
+        if(wishList != null)
+        {
+            for (Integer i : wishList)
+            {
+                if(i == product.getId())
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public static boolean searchInLibrary(UUID id, Product product) throws FileErrorException, JSONException
+    {
+        ArrayList<Integer> library = getLibrary(id);
+
+        if(library != null)
+        {
+            for (Integer i : library)
+            {
+                if(i == product.getId())
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public static boolean searchInCart(UUID id, Product product) throws FileErrorException, JSONException
+    {
+        ArrayList<Integer> cart = getCart(id);
+
+        if(cart != null)
+        {
+            for (Integer i : cart)
+            {
+                if(i == product.getId())
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void addProductWishList(UUID id, Product product) throws AlreadyInListException
     {
         StringBuilder sb = new StringBuilder();
+        
 
         try
         {
+            if(searchInWishList(id, product))
+            {
+                throw new AlreadyInListException("Product already in wishlist");
+            }
+
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line = br.readLine();
 
@@ -77,12 +135,17 @@ public class UserGamesFile
 
     }
 
-    public static void addProductLibrary(UUID id, Product product)
+    public static void addProductLibrary(UUID id, Product product) throws AlreadyInListException
     {
         StringBuilder sb = new StringBuilder();
 
         try
         {
+            if(searchInLibrary(id, product))
+            {
+                throw new AlreadyInListException("Product already in library");
+            }
+            
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line = br.readLine();
 
@@ -124,12 +187,17 @@ public class UserGamesFile
 
     }
 
-    public static void addProductCart(UUID id, Product product)
+    public static void addProductCart(UUID id, Product product) throws AlreadyInListException
     {
         StringBuilder sb = new StringBuilder();
 
         try
         {
+            if(searchInCart(id, product))
+            {
+                throw new AlreadyInListException("Product already in cart");
+            }
+            
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line = br.readLine();
 

@@ -1,21 +1,29 @@
 package App.Frames;
 
 import App.Accounts.User;
+import App.Exceptions.FileErrorException;
+import App.FilesHandler.GamesFile;
+import App.Products.Product;
+import org.json.JSONException;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
+import java.util.Map;
 
 public class UserMainFrame extends JFrame
 {
     public UserMainFrame(User user)
     {
-        super("MainFrame");
+        super("Steam");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+        setLocationRelativeTo(null);
 
         setBackground(Color.BLACK);
 
@@ -28,6 +36,7 @@ public class UserMainFrame extends JFrame
         topBar.setBackground(new Color(36, 44, 68));
         topBar.setLayout(new GridLayout(1,4));
         topBar.setBounds(0, 0, this.getWidth(), 75);
+        topBar.setBorder(new MatteBorder(0, 0, 2, 0, Color.BLACK));
 
         JPanel topBarLeft = new JPanel();
         topBarLeft.setLayout(new GridLayout(1,4));
@@ -103,10 +112,31 @@ public class UserMainFrame extends JFrame
         topBarLeft.add(account);
 
         JPanel topBarRight = new JPanel();
-        topBarRight.setLayout(new GridLayout(1,1));
+        topBarRight.setLayout(new GridLayout(1,3));
         topBarRight.setBackground(new Color(0, 0, 0, 0));
 
-        
+        JLabel userName = new JLabel(user.getName());
+        userName.setForeground(Color.WHITE);
+        userName.setFont(new Font("Arial", Font.BOLD, 15));
+        userName.setHorizontalAlignment(SwingConstants.CENTER);
+        userName.setVerticalAlignment(SwingConstants.CENTER);
+
+        JLabel userBalance = new JLabel("$" + user.getWallet());
+        userBalance.setForeground(Color.WHITE);
+        userBalance.setFont(new Font("Arial", Font.BOLD, 15));
+        userBalance.setHorizontalAlignment(SwingConstants.CENTER);
+        userBalance.setVerticalAlignment(SwingConstants.CENTER);
+
+        JLabel userLogOut = new JLabel();
+        ImageIcon logOutIcon = new ImageIcon("src/App/Images/logOut.png");
+        logOutIcon.setImage(logOutIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+        userLogOut.setIcon(logOutIcon);
+        userLogOut.setHorizontalAlignment(SwingConstants.CENTER);
+        userLogOut.setVerticalAlignment(SwingConstants.CENTER);
+
+        topBarRight.add(userBalance);
+        topBarRight.add(userName);
+        topBarRight.add(userLogOut);
 
         JPanel emptyPanel = new JPanel();
         emptyPanel.setBackground(new Color(0, 0, 0, 0));
@@ -116,7 +146,55 @@ public class UserMainFrame extends JFrame
         topBar.add(emptyPanel);
         topBar.add(topBarRight);
 
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(null);
+        centerPanel.setOpaque(true);
+        centerPanel.setBackground(Color.BLACK);
+        centerPanel.setBounds(0, 75, this.getWidth(), this.getHeight() - 75);
+
+        JPanel gamesPanel = new JPanel();
+        gamesPanel.setLayout(new GridLayout(0, 1));
+        gamesPanel.setBackground(new Color(36, 44, 68));
+        gamesPanel.setBounds((centerPanel.getWidth() - ( (int) (centerPanel.getWidth() / 1.5f) )) / 2, 0, (int) (centerPanel.getWidth() / 1.5f), centerPanel.getHeight());
+
+        try {
+            for (Map.Entry<Integer, Product> entry : GamesFile.fileToTree2("./src/App/FilesHandler/products.json").getTreemap().entrySet())
+            {
+                Product product = entry.getValue();
+
+                JPanel productPanel = new JPanel();
+                productPanel.setLayout(new GridLayout(1, 2));
+                productPanel.setBackground(new Color(36, 44, 68));
+                productPanel.setPreferredSize(new Dimension((int) (gamesPanel.getWidth() * 0.9f), 50));
+
+                JLabel productName = new JLabel(product.getName());
+                productName.setForeground(Color.WHITE);
+                productName.setFont(new Font("Arial", Font.BOLD, 15));
+                productName.setHorizontalAlignment(SwingConstants.CENTER);
+                productName.setVerticalAlignment(SwingConstants.CENTER);
+
+                JLabel productPrice = new JLabel("$" + product.getPrice());
+                productPrice.setForeground(Color.WHITE);
+                productPrice.setFont(new Font("Arial", Font.BOLD, 15));
+                productPrice.setHorizontalAlignment(SwingConstants.CENTER);
+                productPrice.setVerticalAlignment(SwingConstants.CENTER);
+
+                productPanel.add(productName);
+                productPanel.add(productPrice);
+
+                gamesPanel.add(productPanel);
+            }
+
+        } catch (FileErrorException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        centerPanel.add(gamesPanel, BorderLayout.CENTER);
+
         mainPanel.add(topBar);
+        mainPanel.add(centerPanel);
 
         add(mainPanel);
 

@@ -1,5 +1,7 @@
 package App;
 
+import App.Accounts.Account;
+import App.Accounts.Administrator;
 import App.Accounts.Adress;
 import App.Accounts.User;
 import App.Exceptions.BadInputException;
@@ -7,24 +9,52 @@ import App.Exceptions.FileErrorException;
 import App.Exceptions.MissMatchClassException;
 import App.Exceptions.NewUserException;
 import App.FilesHandler.AdminFile;
+import App.FilesHandler.GamesFile;
 import App.FilesHandler.UserGamesFile;
 import App.FilesHandler.UsersFile;
+import App.Products.ESRBClassification;
+import App.Products.Game;
+import App.Products.Product;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.TreeMap;
 import java.util.UUID;
 
 public class Steam
 {
     String usersFilePath = "./src/App/FilesHandler/users.bin";
+    String adminFilePath = "./src/App/FilesHandler/admin.bin";
+
+    String gamesFilePath = "./src/App/FilesHandler/products.json";
     
     private UsersFile usersFile;
     private AdminFile adminFile;
+
+    private ColeccionGenerica<Integer, Product> products;
 
     public Steam()
     {
         usersFile = new UsersFile();
         adminFile = new AdminFile();
+
+        try{
+            BufferedReader bf = new BufferedReader(new FileReader(gamesFilePath));
+
+            products = GamesFile.fileToTree2(gamesFilePath);
+
+        }
+        catch (FileNotFoundException e)
+        {
+            products = new ColeccionGenerica<>();
+        } catch (FileErrorException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -80,4 +110,69 @@ public class Steam
         }
         return null;
     }
+
+    public Game createGame(String name, float price, ESRBClassification esrb, int year, int month, int day, boolean multiplayer,
+                           String developer, String editor, float sizeGB) throws BadInputException
+    {
+        Game newGame = new Game(
+                name,
+                price,
+                esrb,
+                new AppDate(day, month, year),
+                multiplayer,
+                developer,
+                editor,
+                sizeGB
+        );
+        GamesFile.addProductToFile("./src/App/FilesHandler/products.json", newGame);
+
+        return newGame;
+    }
+
+    public Account logIn(String mail, String password) throws BadInputException
+    {
+        try
+        {
+            Account user = usersFile.userFindMail(mail);
+            if(user == null)
+            {
+                user = adminFile.userFindMail(mail);
+            }
+            if(user == null)
+            {
+                throw new BadInputException("The mail is not in use");
+            }
+            if(!user.getPassword().equals(password))
+            {
+                throw new BadInputException("The password is not correct");
+            }
+            return user;
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void modifyAccountUser (User user)
+    {
+        try
+        {
+            usersFile.userUpdate(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void modifyAccountAdministrator (Administrator admin)
+    {
+        try
+        {
+            adminFile.adminUpdate(admin);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

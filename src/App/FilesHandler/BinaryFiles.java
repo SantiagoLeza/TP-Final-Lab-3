@@ -9,4 +9,5 @@ public interface BinaryFiles
 {
     void writeBinary(String fileName, Object content) throws IOException, MissMatchClassException;
     ArrayList readBinary(String fileName) throws IOException;
+    void deleteBinary(String fileName) throws IOException;
 }

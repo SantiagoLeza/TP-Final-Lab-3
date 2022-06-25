@@ -8,6 +8,8 @@ import App.Products.Product;
 
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -43,6 +45,16 @@ public class UsersFile implements BinaryFiles
         catch (ClassCastException e)
         {
             throw new MissMatchClassException("Not an Administrator object");
+        }
+    }
+
+    @Override
+    public void deleteBinary(String fileName) throws IOException
+    {
+        if (Files.exists(Path.of(fileName)))
+        {
+            Files.delete(Path.of(fileName));
+            Files.createFile(Path.of(fileName));
         }
     }
 
@@ -394,6 +406,71 @@ public class UsersFile implements BinaryFiles
 
         return null;
     }
+
+    public void userUpdate (User user) throws IOException
+    {
+        ArrayList<User> users = readBinary("./src/App/FilesHandler/users.bin");
+
+        FileInputStream fis = new FileInputStream("./src/App/FilesHandler/users.bin");
+        DataInputStream dis = new DataInputStream(fis);
+
+        try
+        {
+            UUID uuid = null;
+            boolean flag = false;
+
+            while (true) {
+                if (flag) break;
+                uuid = UUID.fromString(dis.readUTF());
+                dis.readUTF();
+                dis.readUTF();
+                dis.readUTF();
+                dis.readUTF();
+                dis.readUTF();
+                dis.readUTF();
+                dis.readUTF();
+                dis.readUTF();
+                dis.readUTF();
+                dis.readUTF();
+                dis.readInt();
+                dis.readInt();
+                dis.readInt();
+                dis.readFloat();
+
+                if (uuid.toString().equals(user.getUuid().toString())) {
+                    flag = true;
+                    for (User u : users) {
+                        if (u.getUuid().toString().equals(user.getUuid().toString())) {
+                            users.remove(u);
+                            users.add(user);
+                            break;
+                        }
+                    }
+
+                    dis.close();
+                    deleteBinary("./src/App/FilesHandler/users.bin");
+
+                    for (User u : users) {
+                        writeBinary("./src/App/FilesHandler/users.bin", u);
+                    }
+                }
+            }
+        }
+        catch (EOFException e)
+        {
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        } finally {
+            dis.close();
+        }
+
+
+    }
+
+
     
     
 }
