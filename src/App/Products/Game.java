@@ -24,13 +24,14 @@ public class Game extends Product
     /**
      * Use this constructor to create a new game.
      */
-    public Game(String name, float price, ESRBClassification ESRB, AppDate releaseDate, Boolean multiplayer, String developer, String editor, float sizeGB)
+    public Game(String name, float price, ESRBClassification ESRB, AppDate releaseDate, Boolean multiplayer, String developer, String editor, float sizeGB, ArrayList<String> genres, ArrayList<String> labels,
+                ArrayList<String> language, ArrayList<String> platforms)
     {
         super(name, price, ESRB);
-        this.genders = new ArrayList<>();
-        this.labels = new ArrayList<>();
-        this.language = new ArrayList<>();
-        this.platafomrs = new ArrayList<>();
+        this.genders = genres;
+        this.labels = labels;
+        this.language = language;
+        this.platafomrs = platforms;
         this.releaseDate = releaseDate;
         this.multiplayer = multiplayer;
         this.developer = developer;
@@ -201,15 +202,15 @@ public class Game extends Product
     public String toString()
     {
         return super.toString() +
-                ", genders" + genders +
-                ", labels=" + labels +
-                ", language=" + language +
-                ", platafomrs=" + platafomrs +
-                ", releaseDate=" + releaseDate +
-                ", multiplayer=" + multiplayer +
-                ", developer='" + developer + '\'' +
-                ", editor='" + editor + '\'' +
-                ", size=" + sizeGB;
+                ",\n genders" + genders +
+                ",\n labels=" + labels +
+                ",\n language=" + language +
+                ",\n platafomrs=" + platafomrs +
+                ",\n releaseDate=" + releaseDate +
+                ",\n multiplayer=" + multiplayer +
+                ",\n developer='" + developer + '\'' +
+                ",\n editor='" + editor + '\'' +
+                ",\n size=" + sizeGB;
     }
 
     @Override

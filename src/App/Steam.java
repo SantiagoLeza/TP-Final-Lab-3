@@ -14,6 +14,7 @@ import App.FilesHandler.UserGamesFile;
 import App.FilesHandler.UsersFile;
 import App.Products.ESRBClassification;
 import App.Products.Game;
+import App.Products.App;
 import App.Products.Product;
 import org.json.JSONException;
 
@@ -22,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.TreeMap;
 import java.util.UUID;
 
 public class Steam
@@ -112,8 +112,36 @@ public class Steam
         return null;
     }
 
+    public Administrator createAdministrator(String mail, String pasword) throws BadInputException, NewUserException
+    {
+        UUID uuid = UUID.randomUUID();
+        try {
+            if (adminFile.adminFindMail(mail) != null && usersFile.userFindMail(mail) != null) {
+                throw new NewUserException("The mail is already in use");
+            }
+            if (!mail.contains("@") && !mail.contains(".com")) {
+                throw new BadInputException("The mail is not valid");
+            }
+            while (adminFile.administratorFindUUID(uuid) != null) {
+                uuid = UUID.randomUUID();
+            }
+
+            Administrator newAdmin = new Administrator(mail, pasword, uuid);
+            try {
+                adminFile.writeBinary(adminFilePath, newAdmin);
+            } catch (MissMatchClassException e) {
+                e.printStackTrace();
+            }
+            return newAdmin;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Game createGame(String name, float price, ESRBClassification esrb, int year, int month, int day, boolean multiplayer,
-                           String developer, String editor, float sizeGB) throws BadInputException
+                           String developer, String editor, float sizeGB, ArrayList<String> genres, ArrayList<String> labels,
+                           ArrayList<String> language, ArrayList<String> platforms) throws BadInputException
     {
         Game newGame = new Game(
                 name,
@@ -123,11 +151,30 @@ public class Steam
                 multiplayer,
                 developer,
                 editor,
-                sizeGB
+                sizeGB,
+                genres,
+                labels,
+                language,
+                platforms
         );
+        products.addProduct(newGame.getId(), newGame);
         GamesFile.addProductToFile("./src/App/FilesHandler/products.json", newGame);
 
         return newGame;
+    }
+
+    public App createApp(String name, float price, ESRBClassification esrb, String function) throws BadInputException
+    {
+        App newApp = new App(
+                name,
+                price,
+                esrb,
+                function
+        );
+        products.addProduct(newApp.getId(), newApp);
+        GamesFile.addProductToFile("./src/App/FilesHandler/products.json", newApp);
+
+        return newApp;
     }
 
     public Account logIn(String mail, String password) throws BadInputException
@@ -137,7 +184,7 @@ public class Steam
             Account user = usersFile.userFindMail(mail);
             if(user == null)
             {
-                user = adminFile.userFindMail(mail);
+                user = adminFile.adminFindMail(mail);
             }
             if(user == null)
             {
@@ -176,7 +223,7 @@ public class Steam
         }
     }
 
-    public ArrayList<User> showAllUsers ()
+    public ArrayList<User> getAllUsers()
     {
         try {
             return usersFile.readBinary(usersFilePath);
@@ -195,5 +242,62 @@ public class Steam
         }
         return null;
     }
+
+    public Product getProductById(int id)
+    {
+        return products.getThroughId(id);
+    }
+
+    public Product getThroughName(String name)
+    {
+        return products.getThroughName(name);
+    }
+
+    public ArrayList<Product> getByGenre(String genre)
+    {
+        ArrayList<Product> matches = new ArrayList<>();
+        for (Product product : products.treeToArray() )
+        {
+            if (product instanceof Game)
+            {
+                if( ((Game) product).getGenders().contains(genre))
+                {
+                    matches.add(product);
+                }
+            }
+        }
+        return matches;
+    }
+
+    public ArrayList<Product> getByRating(float rating)
+    {
+        ArrayList<Product> matches = new ArrayList<>();
+        for (Product product : products.treeToArray() )
+        {
+            if( Math.round(product.getRating()) == rating )
+            {
+                matches.add(product);
+            }
+        }
+        return matches;
+    }
+
+    public void removeThroughId (Integer id)
+    {
+        products.removeThroughID(id);
+        GamesFile.deleteById(id);
+    }
+    
+    public ArrayList <Product> getProducts ()
+    {
+        return products.treeToArray();
+    }
+
+    public void modifyProduct (Product product2)
+    {
+        GamesFile.modifyProduct(product2);
+    }
+    
+    
 
 }

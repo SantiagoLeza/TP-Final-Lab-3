@@ -114,10 +114,10 @@ public class AccountInfo
     @Override
     public String toString()
     {
-        return  "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", ID='" + ID + '\'' +
-                ", phone='" + phone + '\'' +
-                ", " + adress.toString();
+        return  "\n Name: " + name +
+                "\n Surname: " + surname +
+                "\n ID: " + ID +
+                "\n phone: " + phone +
+                 adress.toString();
     }
 }

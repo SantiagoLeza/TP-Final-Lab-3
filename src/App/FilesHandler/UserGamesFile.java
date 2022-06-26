@@ -339,4 +339,78 @@ public class UserGamesFile
 
         return null;
     }
+
+    public static void removeFormCart(UUID uuid, Product product)
+    {
+        JSONFiles jf = new JSONFiles(filePath);
+        try {
+            JSONArray ja = jf.readJSON();
+
+            JSONObject jo;
+            for (int i = 0; i < ja.length(); i++) {
+                jo = (JSONObject) ja.get(i);
+
+                if(jo.get("UUID").toString().equals(uuid.toString()))
+                {
+                    JSONArray cart = (JSONArray) jo.get("cart");
+                    int productJSON;
+                    for (int j = 0; j < cart.length(); j++) {
+                        productJSON = (int) cart.get(j);
+                        if(productJSON == product.getId())
+                        {
+                            cart.remove(j);
+                            jo.put("cart", cart);
+                            ja.put(i, jo);
+                            jf.writeJSON(ja);
+                            return;
+                        }
+                    }
+
+                    jf.writeJSON(ja);
+                    return;
+                }
+            }
+        } catch (FileErrorException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void removeFormWishList(UUID uuid, Product product)
+    {
+        JSONFiles jf = new JSONFiles(filePath);
+        try {
+            JSONArray ja = jf.readJSON();
+
+            JSONObject jo;
+            for (int i = 0; i < ja.length(); i++) {
+                jo = (JSONObject) ja.get(i);
+
+                if(jo.get("UUID").toString().equals(uuid.toString()))
+                {
+                    JSONArray cart = (JSONArray) jo.get("wishlist");
+                    JSONObject productJSON;
+                    for (int j = 0; j < cart.length(); j++) {
+                        productJSON = (JSONObject) cart.get(j);
+                        if(Integer.parseInt(productJSON.get("id").toString()) == product.getId())
+                        {
+                            cart.remove(j);
+                            jo.put("wishlist", cart);
+                            ja.put(i, jo);
+                            jf.writeJSON(ja);
+                            return;
+                        }
+                    }
+
+                    jf.writeJSON(ja);
+                    return;
+                }
+            }
+        } catch (FileErrorException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

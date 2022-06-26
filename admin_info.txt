@@ -1,0 +1,14 @@
+for creating an admin account:
+1- go to sign up
+2- when completing the fields, write a mail and password you would like to use
+3- in your adress put:
+			"Solar System" as country
+			"Earth" as state
+			"Moon" as city
+			"Mare Tranquillitatis" as street
+4- in the birth date put:
+			20 -> day
+			7 -> month
+			1969 -> year
+5- press signup
+6- done!

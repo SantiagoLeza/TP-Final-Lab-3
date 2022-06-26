@@ -32,12 +32,22 @@ public abstract class Account implements Comparable
         return password;
     }
 
+    public void setMail(String mail)
+    {
+        this.mail = mail;
+    }
+
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
+
     @Override
     public String toString()
     {
-        return  "uuid=" + uuid +
-                ", mail='" + mail + '\'' +
-                ", password='" + password + '\'';
+        return  "\n Uuid:" + uuid +
+                "\n Mail:" + mail +
+                "\n Password: " + password;
     }
     
     @Override

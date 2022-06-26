@@ -10,8 +10,4 @@ public class Developer extends Account
         super(mail, password, uuid);
     }
 
-    public void showAllUsers ()
-    {
-
-    }
 }

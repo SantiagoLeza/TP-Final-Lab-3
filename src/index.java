@@ -1,16 +1,10 @@
 import App.Accounts.Account;
 import App.Accounts.Administrator;
 import App.Accounts.User;
-import App.FilesHandler.GamesFile;
-import App.FilesHandler.UserGamesFile;
-import App.FilesHandler.UsersFile;
-import App.Frames.AdminMainFrame;
+import App.AdminMenu;
 import App.Frames.LogInFrame;
 import App.Frames.UserMainFrame;
-import App.Review;
 import App.Steam;
-
-import java.io.IOException;
 
 public class index
 {
@@ -34,11 +28,12 @@ public class index
 
             Account user = logInFrame.getUser();
 
+
             if(user != null)
             {
                 if(user instanceof User)
                 {
-                    UserMainFrame userMainFrame = new UserMainFrame((User) user);
+                    UserMainFrame userMainFrame = new UserMainFrame((User) user, steam);
                     while(userMainFrame.isVisible())
                     {
                         try {
@@ -49,17 +44,10 @@ public class index
                     }
                     close = userMainFrame.isClose();
                 }
-                else
+                else if (user instanceof Administrator)
                 {
-                    AdminMainFrame adminMainFrame = new AdminMainFrame((Administrator) user);
-                    while(adminMainFrame.isVisible())
-                    {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    AdminMenu.menu(steam);
+                    close = true;
                 }
             }
         }

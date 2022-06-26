@@ -130,6 +130,11 @@ public class Product {
         return f / reviews.size();
     }
 
+    public void setESRB(ESRBClassification ESRB)
+    {
+        this.ESRB = ESRB;
+    }
+
     public void setName(String name)
     {
         this.name = name;
@@ -153,6 +158,7 @@ public class Product {
     public void addSell()
     {
         this.sells++;
+        this.income += price;
     }
 
     public static JSONArray arrayToJSONObject(ArrayList array)
@@ -174,13 +180,13 @@ public class Product {
     @Override
     public String toString()
     {
-        return  "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", reviews=" + reviews +
-                ", rating=" + rating +
-                ", sells=" + sells +
-                ", ESRB=" + ESRB;
+        return  "\nid=" + id +
+                ",\n name='" + name + '\'' +
+                ",\n price=" + price +
+                ",\n reviews=" + reviews +
+                ",\n rating=" + rating +
+                ",\n sells=" + sells +
+                ",\n ESRB=" + ESRB;
     }
     
     public JSONObject toJSON()

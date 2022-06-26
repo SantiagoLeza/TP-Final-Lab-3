@@ -18,34 +18,34 @@ public class GamesFile
 {
 
     public static ColeccionGenerica <Integer, Product> fileToTree2(String path) throws FileErrorException, JSONException
+    {
+        ColeccionGenerica<Integer, Product> tree = new ColeccionGenerica<>();
+
+        JSONFiles jf = new JSONFiles(path);
+        JSONArray ja = jf.readJSON();
+
+        for (int i = 0; i < ja.length(); i++)
         {
-            ColeccionGenerica<Integer, Product> tree = new ColeccionGenerica<>();
-
-            JSONFiles jf = new JSONFiles(path);
-            JSONArray ja = jf.readJSON();
-
-            for (int i = 0; i < ja.length(); i++)
+            JSONObject jo = ja.getJSONObject(i);
+            if(jo.has("game"))
             {
-                JSONObject jo = ja.getJSONObject(i);
-                if(jo.get("game") != null)
-                {
-                    JSONObject game = jo.getJSONObject("game");
-                    tree.addProduct(Integer.parseInt(game.get("id").toString()), new Game(game));
-                }
-                else if(jo.get("app") != null)
-                {
-                    JSONObject app = jo.getJSONObject("app");
-                    tree.addProduct(Integer.parseInt(app.get("id").toString()), new App(app));
-                }
+                JSONObject game = jo.getJSONObject("game");
+                tree.addProduct(Integer.parseInt(game.get("id").toString()), new Game(game));
             }
-
-            return tree;
+            else if(jo.has("app"))
+            {
+                JSONObject app = jo.getJSONObject("app");
+                tree.addProduct(Integer.parseInt(app.get("id").toString()), new App(app));
+            }
         }
+
+        return tree;
+    }
 
 
     public static void addProductToFile(String path, Product product)
     {
-        if(searchInFile(path, product))
+        if(searchInFile(path, product.getId()))
         {
             throw new IllegalArgumentException("Product already in file");
         }
@@ -76,7 +76,7 @@ public class GamesFile
         }
     }
 
-    public static boolean searchInFile(String path, Product product)
+    public static boolean searchInFile(String path, int productId)
     {
         try{
             JSONFiles jf = new JSONFiles(path);
@@ -86,15 +86,15 @@ public class GamesFile
             {
                 JSONObject productJSON = ja.getJSONObject(i);
 
-                if(productJSON.get("game") != null) {
+                if(productJSON.has("game")) {
                     JSONObject game = productJSON.getJSONObject("game");
-                    if (product.getId() == Integer.parseInt(game.get("id").toString())) {
+                    if (productId == Integer.parseInt(game.get("id").toString())) {
                         return true;
                     }
                 }
-                else if(productJSON.get("app") != null) {
+                else if(productJSON.has("app")) {
                     JSONObject app = productJSON.getJSONObject("app");
-                    if (product.getId() == Integer.parseInt(app.get("id").toString())) {
+                    if (productId == Integer.parseInt(app.get("id").toString())) {
                         return true;
                     }
                 }
@@ -106,6 +106,41 @@ public class GamesFile
             e.printStackTrace();
         }
         return false;
+    }
+
+
+
+    public static void deleteById(int id)
+    {
+        try{
+            JSONFiles jf = new JSONFiles("./src/App/FilesHandler/products.json");
+            JSONArray ja = jf.readJSON();
+
+            for (int i = 0; i < ja.length(); i++)
+            {
+                JSONObject productJSON = ja.getJSONObject(i);
+
+                if(productJSON.has("game")) {
+                    JSONObject game = productJSON.getJSONObject("game");
+                    if (id == Integer.parseInt(game.get("id").toString())) {
+                        ja.remove(i);
+                        jf.writeJSON(ja);
+                        return;
+                    }
+                }
+                else if(productJSON.has("app")) {
+                    JSONObject app = productJSON.getJSONObject("app");
+                    if (id == Integer.parseInt(app.get("id").toString())) {
+                        ja.remove(i);
+                        jf.writeJSON(ja);
+                        return;
+                    }
+                }
+            }
+
+        } catch (FileErrorException | JSONException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void addReview(int id, Review review )
@@ -121,7 +156,7 @@ public class GamesFile
             {
                 productJSON = (JSONObject) ja.get(i);
 
-                if(productJSON.get("game") != null)
+                if(productJSON.has("game"))
                 {
                     JSONObject game = productJSON.getJSONObject("game");
                     if ( id  == Integer.parseInt(game.get("id").toString()))
@@ -132,7 +167,7 @@ public class GamesFile
                         jf.writeJSON(ja);
                     }
                 }
-                else if(productJSON.get("app") != null)
+                else if(productJSON.has("app"))
                 {
                     JSONObject app = productJSON.getJSONObject("app");
                     if (id == Integer.parseInt(app.get("id").toString()))
@@ -145,17 +180,63 @@ public class GamesFile
                 }
             }
 
-        } catch (ClassCastException e)
+        } catch (ClassCastException | FileErrorException | JSONException e)
         {
             e.printStackTrace();
 
         }
-         catch (FileErrorException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
+
+    public static void modifyProduct( Product product )
+        {
+
+            try{
+                JSONFiles jf = new JSONFiles("./src/App/FilesHandler/products.json");
+                JSONArray ja = jf.readJSON();
+
+                JSONObject productJSON;
+
+                for (int i = 0; i < ja.length(); i++)
+                {
+                    productJSON = (JSONObject) ja.get(i);
+
+                    if(productJSON.has("game"))
+                    {
+                        JSONObject game = productJSON.getJSONObject("game");
+                        if ( product.getId()  == Integer.parseInt(game.get("id").toString()))
+                        {
+                            game = product.toJSON();
+                            JSONObject toadd = new JSONObject();
+                            toadd.put("game", game);
+                            ja.put(i, toadd);
+                            jf.writeJSON(ja);
+                        }
+                    }
+                    else if(productJSON.has("app"))
+                    {
+                        JSONObject app = productJSON.getJSONObject("app");
+                        if ( product.getId() == Integer.parseInt(app.get("id").toString()))
+                        {
+                            app = product.toJSON();
+                            JSONObject toadd = new JSONObject();
+                            toadd.put("app", app);
+                            ja.put(i, toadd);
+                            jf.writeJSON(ja);
+                        }
+                    }
+                }
+
+            } catch (ClassCastException e)
+            {
+                e.printStackTrace();
+
+            }
+             catch (FileErrorException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
 
 }

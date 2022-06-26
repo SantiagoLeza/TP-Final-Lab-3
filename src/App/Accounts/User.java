@@ -1,11 +1,16 @@
 package App.Accounts;
 
 import App.AppDate;
+import App.Exceptions.AlreadyInListException;
 import App.Exceptions.FileErrorException;
+import App.FilesHandler.GamesFile;
 import App.FilesHandler.UserGamesFile;
+import App.FilesHandler.UsersFile;
 import App.Products.Product;
+import App.Steam;
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -29,6 +34,7 @@ public class User extends Account
         this.cart = new ArrayList<>();
         this.library = new ArrayList<>();
         this.wallet = 0;
+        
     }
 
 
@@ -78,6 +84,11 @@ public class User extends Account
     {
         return birthDate;
     }
+    
+    public void setBirthDate(AppDate birthDate)
+    {
+        this.birthDate = birthDate;
+    }
 
     public void setSurname(String surname)
     {
@@ -94,6 +105,11 @@ public class User extends Account
         accountInfo.setAdress(adress);
     }
 
+    public void setID(String ID)
+    {
+        accountInfo.setID(ID);
+    }
+
     public float getWallet()
     {
         return wallet;
@@ -108,6 +124,7 @@ public class User extends Account
     {
         this.wallet += newFounds;
     }
+
 
     //wishlist
 
@@ -147,28 +164,38 @@ public class User extends Account
     }
 
     public boolean searchCart ( Integer num )
+    {
+
+        for ( int i = 0; i< cart.size(); i++ )
         {
-
-            for ( int i = 0; i< cart.size(); i++ )
+            if ( cart.get(i) == num)
             {
-                if ( cart.get(i) == num)
-                {
-                    return true;
-                }
+                return true;
             }
-
-            return false;
         }
 
+        return false;
+    }
 
-    public void removeCart ( Integer num )
+    public ArrayList<Integer> getCart()
+    {
+        return cart;
+    }
+
+    public void removeCart (Integer num )
     {
         this.cart.remove(num);
     }
 
     // library
 
-    public void addLibrary ( Integer num )
+
+    public ArrayList<Integer> getLibrary()
+    {
+        return library;
+    }
+
+    public void addLibrary (Integer num )
     {
         if (!searchLibrary(num))
         {
@@ -219,31 +246,49 @@ public class User extends Account
                 if (searchCart(product.getId()))
                 {
                     removeCart(product.getId());
+                    UserGamesFile.removeFormCart(this.getUuid(), product);
                 }
                 if (searchWhishList(product.getId()))
                 {
                     removeWishList(product.getId());
+                    UserGamesFile.removeFormWishList(this.getUuid(), product);
                 }
 
                 addLibrary(product.getId());
+
+                try {
+                    UserGamesFile.addProductLibrary(this.getUuid(), product);
+                    product.addSell();
+                    GamesFile.modifyProduct(product);
+                    
+                } catch (AlreadyInListException e) {
+                    e.printStackTrace();
+                }
 
                 wallet -= product.getPrice();
 
                 result = true;
             }
 
+            UsersFile uf = new UsersFile();
+            try {
+                uf.userUpdate(this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             return result;
         }
-
-
-
 
     @Override
     public String toString()
     {
         return  super.toString() +
-                ", birthDate=" + birthDate +
-                ", " + accountInfo;
+                "\n Birthdate: " + birthDate +
+                accountInfo+ "\n Wallet: " +wallet +
+                "\n WishList: " + wishList + "" +
+                "\n Cart: " + cart + "" +
+                "\n Library: " + library + "";
     }
 
 }

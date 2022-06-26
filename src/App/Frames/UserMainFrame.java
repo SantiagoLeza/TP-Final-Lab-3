@@ -3,8 +3,12 @@ package App.Frames;
 import App.Accounts.User;
 import App.Exceptions.FileErrorException;
 import App.FilesHandler.GamesFile;
+import App.FilesHandler.UserGamesFile;
+import App.Frames.Panels.AccountPanel;
+import App.Frames.Panels.LibraryPanel;
 import App.Frames.Panels.StarsPanel;
 import App.Products.Product;
+import App.Steam;
 import org.json.JSONException;
 
 import javax.swing.*;
@@ -13,12 +17,13 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
+import java.util.Objects;
 
 public class UserMainFrame extends JFrame
 {
     private boolean close = true;
 
-    public UserMainFrame(User user)
+    public UserMainFrame(User user, Steam steam)
     {
         super("Steam");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,6 +39,8 @@ public class UserMainFrame extends JFrame
         mainPanel.setBackground(Color.BLACK);
         mainPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
 
+        JTabbedPane tabbedPane = new JTabbedPane();
+
         JPanel topBar = new JPanel();
         topBar.setBackground(new Color(36, 44, 68));
         topBar.setLayout(new GridLayout(1,4));
@@ -41,12 +48,15 @@ public class UserMainFrame extends JFrame
         topBar.setBorder(new MatteBorder(0, 0, 2, 0, Color.BLACK));
 
         JPanel topBarLeft = new JPanel();
+        topBarLeft.setOpaque(true);
         topBarLeft.setLayout(new GridLayout(1,4));
         topBarLeft.setBackground(new Color(0, 0, 0, 0));
         
         JLabel store = new JLabel("STORE");
+        store.setOpaque(true);
         store.setForeground(Color.WHITE);
         store.setFont(new Font("Arial", Font.BOLD, 15));
+        store.setBackground(new Color(36, 44, 68));
         store.setHorizontalAlignment(SwingConstants.CENTER);
         store.setVerticalAlignment(SwingConstants.CENTER);
         store.addMouseListener(new MouseAdapter()
@@ -64,33 +74,34 @@ public class UserMainFrame extends JFrame
                 store.setForeground(Color.WHITE);
                 topBarLeft.repaint();
             }
+
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                tabbedPane.setSelectedIndex(0);
+            }
         });
         topBarLeft.add(store);
 
-        JLabel library = new JLabel("LIBRARY");
-        library.setForeground(Color.WHITE);
-        library.setFont(new Font("Arial", Font.BOLD, 15));
-        library.setHorizontalAlignment(SwingConstants.CENTER);
-        library.setVerticalAlignment(SwingConstants.CENTER);
-        library.addMouseListener(new MouseAdapter()
-        {
-            @Override
-            public void mouseEntered(MouseEvent e)
-            {
-                library.setForeground(Color.gray);
-                topBarLeft.repaint();
-            }
+        JPanel topBarRight = new JPanel();
+        topBarRight.setLayout(new GridLayout(1,4));
+        topBarRight.setBackground(new Color(0, 0, 0, 0));
 
-            @Override
-            public void mouseExited(MouseEvent e)
-            {
-                library.setForeground(Color.WHITE);
-                topBarLeft.repaint();
-            }
-        });
-        topBarLeft.add(library);
-        
+        JLabel cart = new JLabel();
+        cart.setOpaque(true);
+        cart.setBackground(new Color(36, 44, 68));
+        ImageIcon cartIcon = new ImageIcon("src/App/Images/cart.png");
+        cartIcon.setImage(cartIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+        cart.setIcon(cartIcon);
+        cart.setText("(" + Objects.requireNonNull(UserGamesFile.getCart(user.getUuid())).size() + ")");
+        cart.setHorizontalAlignment(SwingConstants.RIGHT);
+        cart.setVerticalAlignment(SwingConstants.BOTTOM);
+        cart.setForeground(Color.WHITE);
+        cart.setFont(new Font("Arial", Font.BOLD, 15));
+
         JLabel account = new JLabel("ACCOUNT");
+        account.setOpaque(true);
+        account.setBackground(new Color(36, 44, 68));
         account.setForeground(Color.WHITE);
         account.setFont(new Font("Arial", Font.BOLD, 15));
         account.setHorizontalAlignment(SwingConstants.CENTER);
@@ -110,26 +121,90 @@ public class UserMainFrame extends JFrame
                 account.setForeground(Color.WHITE);
                 topBarLeft.repaint();
             }
+
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                tabbedPane.setSelectedIndex(1);
+            }
         });
         topBarLeft.add(account);
 
-        JPanel topBarRight = new JPanel();
-        topBarRight.setLayout(new GridLayout(1,3));
-        topBarRight.setBackground(new Color(0, 0, 0, 0));
+        JLabel library = new JLabel("LIBRARY");
+        library.setOpaque(true);
+        library.setForeground(Color.WHITE);
+        library.setFont(new Font("Arial", Font.BOLD, 15));
+        library.setBackground(new Color(36, 44, 68));
+        library.setHorizontalAlignment(SwingConstants.CENTER);
+        library.setVerticalAlignment(SwingConstants.CENTER);
+        library.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseEntered(MouseEvent e)
+            {
+                library.setForeground(Color.gray);
+                topBarLeft.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e)
+            {
+                library.setForeground(Color.WHITE);
+                topBarLeft.repaint();
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                tabbedPane.removeTabAt(2);
+                tabbedPane.addTab("LIBRARY", new LibraryPanel(user, steam, cart));
+                tabbedPane.setSelectedIndex(2);
+            }
+        });
+        topBarLeft.add(library);
 
         JLabel userName = new JLabel(user.getName());
+        userName.setOpaque(true);
+        userName.setBackground(new Color(36, 44, 68));
         userName.setForeground(Color.WHITE);
         userName.setFont(new Font("Arial", Font.BOLD, 15));
         userName.setHorizontalAlignment(SwingConstants.CENTER);
         userName.setVerticalAlignment(SwingConstants.CENTER);
 
         JLabel userBalance = new JLabel("$" + user.getWallet());
+        userBalance.setOpaque(true);
+        userBalance.setBackground(new Color(36, 44, 68));
         userBalance.setForeground(Color.WHITE);
         userBalance.setFont(new Font("Arial", Font.BOLD, 15));
         userBalance.setHorizontalAlignment(SwingConstants.CENTER);
         userBalance.setVerticalAlignment(SwingConstants.CENTER);
 
+        cart.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseEntered(MouseEvent e)
+            {
+                cart.setForeground(Color.gray);
+                topBarRight.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e)
+            {
+                cart.setForeground(Color.WHITE);
+                topBarRight.repaint();
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                new CartFrame(user, cart, userBalance);
+            }
+        });
+        
         JLabel userLogOut = new JLabel();
+        userLogOut.setOpaque(true);
+        userLogOut.setBackground(new Color(36, 44, 68));
         ImageIcon logOutIcon = new ImageIcon("src/App/Images/logOut.png");
         logOutIcon.setImage(logOutIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
         userLogOut.setIcon(logOutIcon);
@@ -145,6 +220,7 @@ public class UserMainFrame extends JFrame
             }
         });
 
+        topBarRight.add(cart);
         topBarRight.add(userBalance);
         topBarRight.add(userName);
         topBarRight.add(userLogOut);
@@ -205,10 +281,10 @@ public class UserMainFrame extends JFrame
                     @Override
                     public void mouseClicked(MouseEvent e)
                     {
-                        if (e.getButton() == MouseEvent.BUTTON1)
-                        {
-                            ProductFrame productFrame = new ProductFrame(user, product);
-                        }
+                    if (e.getButton() == MouseEvent.BUTTON1)
+                    {
+                        ProductFrame productFrame = new ProductFrame(user, product, cart);
+                    }
                     }
                 });
 
@@ -223,8 +299,17 @@ public class UserMainFrame extends JFrame
 
         centerPanel.add(gamesPanel, BorderLayout.CENTER);
 
+        tabbedPane.addTab("Store", centerPanel);
+        tabbedPane.setBounds(0, 50, this.getWidth(), this.getHeight() - 50);
+
+        JPanel accountPanel = new JPanel();
+
+        tabbedPane.addTab("Account", new AccountPanel(user, steam, tabbedPane, userName, userBalance));
+
+        tabbedPane.addTab("Library", new LibraryPanel(user, steam, cart));
+
         mainPanel.add(topBar);
-        mainPanel.add(centerPanel);
+        mainPanel.add(tabbedPane);
 
         add(mainPanel);
 

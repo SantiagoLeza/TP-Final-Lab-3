@@ -10,4 +10,6 @@ public class Administrator extends Account{
         super(mail, password, uuid);
     }
 
+
+
 }

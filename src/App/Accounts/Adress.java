@@ -58,9 +58,9 @@ public class Adress
     @Override
     public String toString()
     {
-        return "country='" + country + '\'' +
-                ", state='" + state + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'';
+        return "\n Country: " + country +
+                "\n State: " + state +
+                "\n City='" + city +
+                "\n Street='" + street;
     }
 }

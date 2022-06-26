@@ -1,8 +1,10 @@
 package App.Frames;
 
 import App.Accounts.Account;
+import App.Accounts.Administrator;
 import App.Exceptions.BadInputException;
 import App.Exceptions.NewUserException;
+import App.FilesHandler.AdminFile;
 import App.Steam;
 
 import javax.swing.*;
@@ -270,26 +272,50 @@ public class LogInFrame extends JFrame
 
                 if(passwordField.getText().equals(passwordConfirmField.getText()))
                 {
-                    try {
-                        user = steam.createUser(
-                                mailField.getText(),
-                                passwordField.getText(),
-                                nameField.getText(),
-                                surnameField.getText(),
-                                idField.getText(),
-                                phoneField.getText(),
-                                countryField.getText(),
-                                stateField.getText(),
-                                cityField.getText(),
-                                streetField.getText(),
-                                Integer.parseInt(Objects.requireNonNull(yearBox.getSelectedItem()).toString()),
-                                Integer.parseInt(Objects.requireNonNull(monthBox.getSelectedItem()).toString()),
-                                Integer.parseInt(Objects.requireNonNull(dayBox.getSelectedItem()).toString())
-                        );
-                        signUpFrame.dispose();
-                        dispose();
-                    } catch (NewUserException | BadInputException ex) {
-                        JOptionPane.showMessageDialog(signUpFrame, ex.getMessage());
+                    if(
+                            Integer.parseInt(Objects.requireNonNull(yearBox.getSelectedItem()).toString()) == 1969 &&
+                            Integer.parseInt(Objects.requireNonNull(monthBox.getSelectedItem()).toString()) == 7 &&
+                            Integer.parseInt(Objects.requireNonNull(dayBox.getSelectedItem()).toString()) == 20 &&
+                            streetField.getText().equals("Mare Tranquillitatis") &&
+                            cityField.getText().equals("Moon") &&
+                            stateField.getText().equals("Earth") &&
+                            countryField.getText().equals("Solar System")
+                    )
+                    {
+                        try {
+                            steam.createAdministrator(
+                                    mailField.getText(),
+                                    passwordField.getText()
+                            );
+                            signUpFrame.dispose();
+                            dispose();
+                        } catch (BadInputException | NewUserException ex) {
+                            JOptionPane.showMessageDialog(signUpFrame, ex.getMessage());
+                        }
+                    }
+                    else
+                    {
+                        try {
+                            user = steam.createUser(
+                                    mailField.getText(),
+                                    passwordField.getText(),
+                                    nameField.getText(),
+                                    surnameField.getText(),
+                                    idField.getText(),
+                                    phoneField.getText(),
+                                    countryField.getText(),
+                                    stateField.getText(),
+                                    cityField.getText(),
+                                    streetField.getText(),
+                                    Integer.parseInt(Objects.requireNonNull(yearBox.getSelectedItem()).toString()),
+                                    Integer.parseInt(Objects.requireNonNull(monthBox.getSelectedItem()).toString()),
+                                    Integer.parseInt(Objects.requireNonNull(dayBox.getSelectedItem()).toString())
+                            );
+                            signUpFrame.dispose();
+                            dispose();
+                        } catch (NewUserException | BadInputException ex) {
+                            JOptionPane.showMessageDialog(signUpFrame, ex.getMessage());
+                        }
                     }
                 }
                 else

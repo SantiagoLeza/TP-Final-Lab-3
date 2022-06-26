@@ -14,10 +14,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ProductFrame extends JFrame
 {
-    public ProductFrame(User user, Product product)
+    public ProductFrame(User user, Product product, JLabel cart)
     {
         super(product.getName());
         setTitle(product.getName());
@@ -234,6 +235,7 @@ public class ProductFrame extends JFrame
                     user.addCart(product.getId());
                     try {
                         UserGamesFile.addProductCart(user.getUuid(), product);
+                        cart.setText("(" + Objects.requireNonNull(UserGamesFile.getCart(user.getUuid())).size() + ")");
                     } catch (AlreadyInListException ex) {
                         ex.printStackTrace();
                     }

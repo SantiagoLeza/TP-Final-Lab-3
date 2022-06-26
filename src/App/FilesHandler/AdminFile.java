@@ -1,7 +1,6 @@
 package App.FilesHandler;
 
 import App.Accounts.Administrator;
-import App.Accounts.User;
 import App.Exceptions.MissMatchClassException;
 
 import java.io.*;
@@ -19,11 +18,11 @@ public class AdminFile implements BinaryFiles
         DataOutputStream dos = new DataOutputStream(fos);
         try
         {
-            User user = (User) content;
+            Administrator admin = (Administrator) content;
 
-            dos.writeUTF(user.getUuid().toString());
-            dos.writeUTF(user.getMail());
-            dos.writeUTF(user.getPassword());
+            dos.writeUTF(admin.getUuid().toString());
+            dos.writeUTF(admin.getMail());
+            dos.writeUTF(admin.getPassword());
 
             dos.close();
         }
@@ -80,7 +79,7 @@ public class AdminFile implements BinaryFiles
     }
 
 
-    public Administrator userFindMail(String mail) throws IOException
+    public Administrator adminFindMail(String mail) throws IOException
     {
         FileInputStream fis = new FileInputStream("./src/App/FilesHandler/admin.bin");
         DataInputStream dis = new DataInputStream(fis);
@@ -169,5 +168,45 @@ public class AdminFile implements BinaryFiles
 
 
         }
+
+    public Administrator administratorFindUUID (UUID UUID1) throws IOException
+    {
+        FileInputStream fis = new FileInputStream("./src/App/FilesHandler/admin.bin");
+        DataInputStream dis = new DataInputStream(fis);
+
+        try {
+
+            while(true)
+            {
+                UUID uuid;
+                String mail;
+                String password;
+
+                while(true)
+                {
+                    uuid = UUID.fromString(dis.readUTF());
+                    mail = dis.readUTF();
+                    password = dis.readUTF();
+
+
+                    if (uuid.equals(UUID1))
+                    {
+                        return new Administrator(mail, password, uuid);
+                    }
+                }
+            }
+        }
+        catch (EOFException e)
+        {}
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally {
+            dis.close();
+        }
+
+        return null;
+    }
 
  }

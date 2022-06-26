@@ -12,6 +12,14 @@ public class AppDate
         this.month = month;
         this.year = year;
     }
+    
+    public AppDate(String date)
+    {
+        String[] dateSplit = date.split("/");
+        this.day = Integer.parseInt(dateSplit[0]);
+        this.month = Integer.parseInt(dateSplit[1]);
+        this.year = Integer.parseInt(dateSplit[2]);
+    }
 
     public int getDay()
     {
