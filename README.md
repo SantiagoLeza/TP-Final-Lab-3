@@ -2,4 +2,4 @@
 proyecto final utn mar del plata
 por:
   santiago delgado,
-  santiago leza
+  santiago leza 
