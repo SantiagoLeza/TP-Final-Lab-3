@@ -42,9 +42,9 @@ public class Game extends Product
     /**
      * Use this constructor when importing a game from a file.
      */
-    public Game(int id, String name, float price, ArrayList<Review> reviews, ESRBClassification ESRB, AppDate releaseDate, Boolean multiplayer, String developer, String editor, float sizeGB)
+    public Game(int id, String name, float price, ArrayList<Review> reviews, ESRBClassification ESRB, AppDate releaseDate, Boolean multiplayer, String developer, String editor, float sizeGB, boolean aviable)
     {
-        super(id, name, price, reviews, ESRB);
+        super(id, name, price, reviews, ESRB, aviable);
         genders = new ArrayList<>();
         this.labels = new ArrayList<>();
         this.language = new ArrayList<>();
@@ -59,13 +59,13 @@ public class Game extends Product
     public Game( JSONObject obJSOn ) throws JSONException
     {
         super(
-
                 new JSONObject("{" + "id:" + obJSOn.get("id").toString() + "}"),
                 new JSONObject("{" + "name:" + obJSOn.get("name").toString() + "}"),
                 new JSONObject("{" + "price:" + obJSOn.get("price").toString() + "}"),
                 (JSONArray) obJSOn.get("reviews"),
                 new JSONObject("{" + "ESRB:" + obJSOn.get("ESRB").toString() + "}"),
-                new JSONObject("{" + "income:" + obJSOn.get("income").toString() + "}")
+                new JSONObject("{" + "income:" + obJSOn.get("income").toString() + "}"),
+                new JSONObject("{" + "aviable:" + obJSOn.get("aviable").toString() + "}")
         );
 
         JSONArray gendresArray = (JSONArray) obJSOn.get("genders");

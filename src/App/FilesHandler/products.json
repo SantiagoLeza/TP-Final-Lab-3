@@ -1,1 +1,241 @@
-[{"game":{"income":0,"editor":"PlayStation","languages":["English","Japanese","French","German","Spanish"],"sells":0,"releaseDate":{"month":2,"year":2018,"day":2},"rating":0,"genders":["Adventure","Action"],"labels":["Nordic","God","Fight"],"platafomrs":["Windows","Steam Deck"],"reviews":[{"rating":3,"text":"Espectacular","user":"asd"},{"rating":1,"text":"tas tiste","user":"dsa"},{"rating":5,"text":"anachei","user":"dsa"},{"rating":4,"text":"buenardo","user":"dsa"}],"size":85,"price":2500,"name":"God of War","developer":"Santa Monica","id":0,"ESRB":"T","multiplayer":false}},{"game":{"income":0,"editor":"PlayStation","languages":["English"],"sells":0,"releaseDate":{"month":2,"year":2019,"day":2},"rating":0,"genders":["Action","Survival"],"labels":["Exploration","Zombies"],"platafomrs":["PS4"],"reviews":[{"rating":2,"text":"Muy largo","user":"dsa"},{"rating":4,"text":"Esta bueno igual","user":"dsa"}],"size":120,"price":3000,"name":"The Last of Us Part II","developer":"Santa Monica","id":1,"ESRB":"A","multiplayer":false}},{"game":{"income":5000,"editor":"Play Station","languages":["English","Spanish","Russian"],"sells":1,"releaseDate":{"month":9,"year":2018,"day":20},"rating":0,"genders":["Fight","Adventure"],"labels":["Super Heros","Marvel"],"platafomrs":["PS4","PS5","Windows"],"reviews":[],"size":55,"price":5000,"name":"Spider Man","developer":"Santa Monica Studios","id":2,"ESRB":"T","multiplayer":false}},{"game":{"income":600,"editor":"Rockstar Games","languages":["English"],"sells":1,"releaseDate":{"month":8,"year":2013,"day":5},"rating":0,"genders":["Shooter","Adventure"],"labels":["Violence","Crime"],"platafomrs":["Windows","PS4","PS3","PS5","Xbox","Steam Deck"],"reviews":[{"rating":4,"text":"old but gold","user":"jorge"}],"size":80,"price":600,"name":"Grand Theft Auto 5","developer":"Rockstar Games","id":4,"ESRB":"A","multiplayer":true}},{"app":{"income":0,"reviews":[],"sells":0,"price":0,"function":"Comunication","name":"Discord","rating":0,"id":5,"ESRB":"E"}},{"app":{"income":0,"reviews":[],"sells":0,"price":0,"function":"Music","name":"Spotify","rating":0,"id":6,"ESRB":"E"}},{"app":{"income":1000,"reviews":[],"sells":1,"price":1000,"function":"Video Editor","name":"Sony Vegas","rating":0,"id":7,"ESRB":"E"}}]
+[
+  {
+	"game": {
+	  "income": 0,
+	  "editor": "PlayStation",
+	  "aviable": true,
+	  "languages": [
+		"English",
+		"Japanese",
+		"French",
+		"German",
+		"Spanish"
+	  ],
+	  "sells": 0,
+	  "releaseDate": {
+		"month": 2,
+		"year": 2018,
+		"day": 2
+	  },
+	  "rating": 0,
+	  "genders": [
+		"Adventure",
+		"Action"
+	  ],
+	  "labels": [
+		"Nordic",
+		"God",
+		"Fight"
+	  ],
+	  "platafomrs": [
+		"Windows",
+		"Steam Deck"
+	  ],
+	  "reviews": [
+		{
+		  "rating": 3,
+		  "text": "Espectacular",
+		  "user": "asd"
+		},
+		{
+		  "rating": 1,
+		  "text": "tas tiste",
+		  "user": "dsa"
+		},
+		{
+		  "rating": 5,
+		  "text": "anachei",
+		  "user": "dsa"
+		},
+		{
+		  "rating": 4,
+		  "text": "buenardo",
+		  "user": "dsa"
+		}
+	  ],
+	  "size": 85,
+	  "price": 2500,
+	  "name": "God of War",
+	  "developer": "Santa Monica",
+	  "id": 0,
+	  "ESRB": "T",
+	  "multiplayer": false
+	}
+  },
+  {
+	"game": {
+	  "income": 0,
+	  "editor": "PlayStation",
+	  "aviable": true,
+	  "languages": [
+		"English"
+	  ],
+	  "sells": 0,
+	  "releaseDate": {
+		"month": 2,
+		"year": 2019,
+		"day": 2
+	  },
+	  "rating": 0,
+	  "genders": [
+		"Action",
+		"Survival"
+	  ],
+	  "labels": [
+		"Exploration",
+		"Zombies"
+	  ],
+	  "platafomrs": [
+		"PS4"
+	  ],
+	  "reviews": [
+		{
+		  "rating": 2,
+		  "text": "Muy largo",
+		  "user": "dsa"
+		},
+		{
+		  "rating": 4,
+		  "text": "Esta bueno igual",
+		  "user": "dsa"
+		}
+	  ],
+	  "size": 120,
+	  "price": 3000,
+	  "name": "The Last of Us Part II",
+	  "developer": "Santa Monica",
+	  "id": 1,
+	  "ESRB": "A",
+	  "multiplayer": false
+	}
+  },
+  {
+	"game": {
+	  "income": 5000,
+	  "editor": "Play Station",
+	  "aviable": true,
+	  "languages": [
+		"English",
+		"Spanish",
+		"Russian"
+	  ],
+	  "sells": 1,
+	  "releaseDate": {
+		"month": 9,
+		"year": 2018,
+		"day": 20
+	  },
+	  "rating": 0,
+	  "genders": [
+		"Fight",
+		"Adventure"
+	  ],
+	  "labels": [
+		"Super Heros",
+		"Marvel"
+	  ],
+	  "platafomrs": [
+		"PS4",
+		"PS5",
+		"Windows"
+	  ],
+	  "reviews": [],
+	  "size": 55,
+	  "price": 5000,
+	  "name": "Spider Man",
+	  "developer": "Santa Monica Studios",
+	  "id": 2,
+	  "ESRB": "T",
+	  "multiplayer": false
+	}
+  },
+  {
+	"game": {
+	  "income": 600,
+	  "editor": "Rockstar Games",
+	  "aviable": true,
+	  "languages": [
+		"English"
+	  ],
+	  "sells": 1,
+	  "releaseDate": {
+		"month": 8,
+		"year": 2013,
+		"day": 5
+	  },
+	  "rating": 0,
+	  "genders": [
+		"Shooter",
+		"Adventure"
+	  ],
+	  "labels": [
+		"Violence",
+		"Crime"
+	  ],
+	  "platafomrs": [
+		"Windows",
+		"PS4",
+		"PS3",
+		"PS5",
+		"Xbox",
+		"Steam Deck"
+	  ],
+	  "reviews": [
+		{
+		  "rating": 4,
+		  "text": "old but gold",
+		  "user": "jorge"
+		}
+	  ],
+	  "size": 80,
+	  "price": 600,
+	  "name": "Grand Theft Auto 5",
+	  "developer": "Rockstar Games",
+	  "id": 3,
+	  "ESRB": "A",
+	  "multiplayer": true
+	}
+  },
+  {
+	"app": {
+	  "income": 0,
+	  "aviable": true,
+	  "reviews": [],
+	  "sells": 0,
+	  "price": 0,
+	  "function": "Comunication",
+	  "name": "Discord",
+	  "rating": 0,
+	  "id": 4,
+	  "ESRB": "E"
+	}
+  },
+  {
+	"app": {
+	  "income": 0,
+	  "aviable": true,
+	  "reviews": [],
+	  "sells": 0,
+	  "price": 0,
+	  "function": "Music",
+	  "name": "Spotify",
+	  "rating": 0,
+	  "id": 5,
+	  "ESRB": "E"
+	}
+  },
+  {
+	"app": {
+	  "income": 1000,
+	  "aviable": true,
+	  "reviews": [],
+	  "sells": 1,
+	  "price": 1000,
+	  "function": "Video Editor",
+	  "name": "Sony Vegas",
+	  "rating": 0,
+	  "id": 6,
+	  "ESRB": "E"
+	}
+  }
+]

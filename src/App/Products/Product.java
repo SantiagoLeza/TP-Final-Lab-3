@@ -19,6 +19,7 @@ public class Product {
     private int sells;
     private ESRBClassification ESRB;
     private float income;
+    private boolean aviable;
     /**
      * Use this constructor to create a new product.
      */
@@ -32,13 +33,13 @@ public class Product {
         this.rating = 0;
         this.ESRB = ESRB;
         this.income = 0;
-
+        this.aviable = true;
     }
 
     /**
      * Use this constructor when importing a product from a file.
      */
-    public Product (int id, String name, float price, ArrayList<Review> reviews, ESRBClassification ESRB)
+    public Product (int id, String name, float price, ArrayList<Review> reviews, ESRBClassification ESRB, boolean aviable)
     {
 
         this.id = id;
@@ -46,6 +47,7 @@ public class Product {
         this.price = price;
         this.reviews = reviews;
         this.ESRB = ESRB;
+        this.aviable = aviable;
 
         lastID = Math.max(lastID, id);
 
@@ -59,7 +61,7 @@ public class Product {
 
     }
 
-    public Product( JSONObject id, JSONObject name, JSONObject price, JSONArray rewiews, JSONObject esrb, JSONObject income )
+    public Product( JSONObject id, JSONObject name, JSONObject price, JSONArray rewiews, JSONObject esrb, JSONObject income, JSONObject aviable )
     {
         try
         {
@@ -77,6 +79,7 @@ public class Product {
             this.reviews = reviewCollection;
             this.ESRB = ESRBClassification.valueOf(esrb.get("ESRB").toString());
             this.income= Float.parseFloat(income.get("income").toString());
+            this.aviable = Boolean.parseBoolean(aviable.get("aviable").toString());
 
             lastID = Math.max(lastID, Integer.parseInt(id.get("id").toString()));
         }
@@ -114,6 +117,16 @@ public class Product {
     public float getPrice()
     {
         return price;
+    }
+
+    public boolean isAviable()
+    {
+        return aviable;
+    }
+
+    public void setAviable(boolean aviable)
+    {
+        this.aviable = aviable;
     }
 
     public float getRating()
@@ -181,6 +194,7 @@ public class Product {
     public String toString()
     {
         return  "\nid=" + id +
+                ",\nis aviable=" + aviable +
                 ",\n name='" + name + '\'' +
                 ",\n price=" + price +
                 ",\n reviews=" + reviews +
@@ -209,6 +223,7 @@ public class Product {
             json.put("sells", sells);
             json.put("ESRB", ESRB);
             json.put("income", income);
+            json.put("aviable", aviable);
             return json;
         }
         catch (JSONException e)

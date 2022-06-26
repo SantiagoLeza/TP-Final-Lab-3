@@ -27,7 +27,7 @@ public class LibraryPanel extends JPanel
             JPanel productPanel = new JPanel();
             productPanel.setLayout(new GridLayout(1, 0));
             productPanel.setBackground(new Color(36, 44, 68));
-            //productPanel.setBounds((int) (getWidth() * 0.05f), (100 + 5) * i, (int) (getWidth() * 0.9f), 100);
+            if(!product.isAviable()){productPanel.setBackground(new Color(36, 44, 68, 126));}
             productPanel.setPreferredSize(new Dimension((int) (getWidth() * 0.9f), 100));
             productPanel.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
 
@@ -38,6 +38,7 @@ public class LibraryPanel extends JPanel
             productName.setVerticalAlignment(SwingConstants.CENTER);
 
             JLabel productPrice = new JLabel("$" + product.getPrice());
+            if(!product.isAviable()){productPrice.setText("Product not aviable");}
             productPrice.setForeground(Color.WHITE);
             productPrice.setFont(new Font("Arial", Font.BOLD, 15));
             productPrice.setHorizontalAlignment(SwingConstants.CENTER);
@@ -54,7 +55,7 @@ public class LibraryPanel extends JPanel
                 @Override
                 public void mouseClicked(MouseEvent e)
                 {
-                    if (e.getButton() == MouseEvent.BUTTON1)
+                    if (product.isAviable() && e.getButton() == MouseEvent.BUTTON1)
                     {
                         ProductFrame productFrame = new ProductFrame(user, product, cart);
                     }

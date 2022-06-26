@@ -29,7 +29,7 @@ public class AdminMenu
             cls();
 
             System.out.println("1. Add product        || 2. View Products");
-            System.out.println("3. Search product     || 4. Remove product");
+            System.out.println("3. Search product     || 4. Change product aviability");
             System.out.println("5. Edit product       || 6. View users");
             System.out.println("7. Set wallet user    || 8. Exit");
             System.out.print("Select an option: ");
@@ -281,97 +281,72 @@ public class AdminMenu
                         }
                     }
 
-                    switch (option3)
-                    {
-                        case 1:
+                    switch (option3) {
+                        case 1 -> {
                             System.out.println("Enter the name of the product:");
                             String name = scanner.nextLine();
                             Product product = steam.getThroughName(name);
-                            if (product == null)
-                            {
+                            if (product == null) {
                                 System.out.println("Product not found");
-                            }
-                            else
-                            {
+                            } else {
                                 System.out.println(product.toString());
                             }
-                            break;
-                        case 2:
+                        }
+                        case 2 -> {
                             System.out.println("Enter the genre to search:");
                             String genre = scanner.nextLine();
                             ArrayList<Product> products = steam.getByGenre(genre);
-                            if (products.isEmpty())
-                            {
+                            if (products.isEmpty()) {
                                 System.out.println("No products found");
-                            }
-                            else
-                            {
-                                for (Product p : products)
-                                {
+                            } else {
+                                for (Product p : products) {
                                     System.out.println(p.toString());
                                     System.out.println("__________________________________________");
                                 }
                             }
-                            break;
-                        case 3:
+                        }
+                        case 3 -> {
                             badInput = true;
                             int id = 0;
-                            while (badInput)
-                            {
+                            while (badInput) {
                                 System.out.println("Enter the id of the product:");
-                                try
-                                {
+                                try {
                                     id = Integer.parseInt(scanner.nextLine());
                                     badInput = false;
-                                }
-                                catch (NumberFormatException e)
-                                {
+                                } catch (NumberFormatException e) {
                                     System.out.println("Invalid option");
                                 }
                             }
                             Product product2 = steam.getProductById(id);
-                            if (product2 == null)
-                            {
+                            if (product2 == null) {
                                 System.out.println("Product not found");
-                            }
-                            else
-                            {
+                            } else {
                                 System.out.println(product2.toString());
                             }
-                            break;
-                        case 4:
+                        }
+                        case 4 -> {
                             System.out.println("Enter the rating to search:");
                             badInput = true;
                             int rating = 0;
-                            while (badInput)
-                            {
-                                try
-                                {
+                            while (badInput) {
+                                try {
                                     rating = Integer.parseInt(scanner.nextLine());
                                     badInput = false;
-                                }
-                                catch (NumberFormatException e)
-                                {
+                                } catch (NumberFormatException e) {
                                     System.out.println("Invalid option");
                                 }
                             }
                             ArrayList<Product> products2 = steam.getByRating(rating);
-                            if (products2.isEmpty())
-                            {
+                            if (products2.isEmpty()) {
                                 System.out.println("No products found");
-                            }
-                            else
-                            {
-                                for (Product p : products2)
-                                {
+                            } else {
+                                for (Product p : products2) {
                                     System.out.println(p.toString());
                                     System.out.println("__________________________________________");
                                 }
                             }
-                            break;
-                        default:
-                            System.out.println("Invalid option");
-                            break;
+                        }
+                        default -> System.out.println("Invalid option");
                     }
                     break;
                 case 4:
@@ -379,7 +354,7 @@ public class AdminMenu
                     int id = 0;
                     while (badInput)
                     {
-                        System.out.println("Enter the id of the product to delete:");
+                        System.out.println("Enter the id of the product to change:");
                         try
                         {
                             id = Integer.parseInt(scanner.nextLine());
@@ -390,7 +365,8 @@ public class AdminMenu
                             System.out.println("Invalid option");
                         }
                     }
-                    steam.removeThroughId(id);
+                    steam.changeConditionOfGame(id);
+                    System.out.println(steam.getProductById(id).getName() + " condition changed to " + steam.getProductById(id).isAviable());
                     break;
                 case 5:
                     System.out.println("Enter the id of the product to update:");
@@ -583,6 +559,7 @@ public class AdminMenu
                 case 8:
                     end = true;
                     break;
+
                 default:
                     System.out.println("Invalid option");
                     break;

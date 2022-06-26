@@ -297,6 +297,12 @@ public class Steam
     {
         GamesFile.modifyProduct(product2);
     }
+
+    public void changeConditionOfGame (int id)
+    {
+        getProductById(id).setAviable(!getProductById(id).isAviable());
+        GamesFile.modifyProduct(getProductById(id));
+    }
     
     
 

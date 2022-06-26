@@ -26,7 +26,8 @@ public class App extends Product
                new JSONObject("{" + "price:" + bjson.get("price").toString() + "}"),
                (JSONArray) bjson.get("reviews"),
                new JSONObject("{" + "ESRB:" + bjson.get("ESRB").toString() + "}"),
-               new JSONObject("{" + "income:" + bjson.get("income").toString() + "}")
+               new JSONObject("{" + "income:" + bjson.get("income").toString() + "}"),
+                new JSONObject("{" + "aviable:" + bjson.get("aviable").toString() + "}")
         );
 
         this.function = bjson.get("function").toString();
